@@ -17,14 +17,21 @@ Route::get('posts', function () {
   return App\Post::all();
 });
 
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => 'auth'], function(){
-  Route::get('posts','PostsController@index');
-});
+Route::group(
+  [
+    'prefix' => 'admin',
+    'namespace' => 'Admin',
+    'middleware' => 'auth'
+  ],
+  function () {
+    Route::get('posts', 'PostsController@index')->name('admin.posts.index');
+    Route::get('/', 'AdminController@index')->middleware('auth')->name('admin');
+  }
+);
 
 
 
 
-Route::get('home','HomeController@index')->middleware('auth');
 
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
@@ -38,8 +45,3 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('passw
 
 Auth::routes();
 
-
-
-Auth::routes();
-
- 
